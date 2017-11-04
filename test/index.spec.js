@@ -52,12 +52,18 @@ describe('airy-task', function () {
             done()
         })
     })
-    it('task can be cancel ', function (done) {
-        aTask([1, 2, 3], () => {
-            return false
+    it('task can be cancel', function (done) {
+        let orderList = [];
+
+        aTask([1, 2, 3], ({value}) => {
+            if (value === 1) {
+                return false;
+            }
+            orderList.push(value);
         }).then(() => {
             throw(new Error('not cancelable'))
         }).catch(() => {
+            assert.deepEqual(orderList, []);
             done();
         })
     })
