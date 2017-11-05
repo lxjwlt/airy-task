@@ -16,17 +16,10 @@ function main (queue, func, resolve, reject) {
     nextTick(() => {
         let lastTime = Date.now()
 
-        while (Date.now() - lastTime <= 16) {
-            let remain = queue.length
-
-            if (!remain) {
-                resolve()
-                return
-            }
-
+        while (queue.length && Date.now() - lastTime <= 16) {
             let result = func({
                 value: queue.shift(),
-                remain: remain
+                remain: queue.length
             })
 
             if (isPromise(result)) {
@@ -40,6 +33,12 @@ function main (queue, func, resolve, reject) {
                 reject()
                 return
             }
+        }
+
+        if (queue.length) {
+            main.apply(null, arguments)
+        } else {
+            resolve();
         }
     })
 

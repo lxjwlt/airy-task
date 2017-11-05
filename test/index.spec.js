@@ -32,6 +32,21 @@ describe('airy-task', function () {
             done()
         })
     })
+    it('long time task', function (done) {
+        let arr = [1, 2, 3]
+        let orderList = []
+
+        aTask(arr, ({value}) => {
+            if (value === 1) {
+                let time = Date.now();
+                while (Date.now() - time <= 30) {}
+            }
+            orderList.push(value)
+        }).then(() => {
+            assert.deepEqual(orderList, [1, 2, 3])
+            done()
+        })
+    })
     it('support return promise', function (done) {
         let arr = [1, 2, 3]
         let orderList = []
@@ -67,4 +82,5 @@ describe('airy-task', function () {
             done();
         })
     })
+
 })
