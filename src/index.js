@@ -11,20 +11,25 @@ function airyTask (list, func) {
     })
 }
 
-function main (queue, func, resolve, reject) {
+function main (queue, func, resolve, reject, index) {
+
+    index = index || 0;
 
     nextTick(() => {
         let lastTime = Date.now()
+        let len = queue.length;
 
-        while (queue.length && Date.now() - lastTime <= 16) {
+        while (index < len && Date.now() - lastTime <= 16) {
             let result = func({
-                value: queue.shift(),
-                remain: queue.length
+                value: queue[index],
+                index: index
             })
+
+            index += 1;
 
             if (isPromise(result)) {
                 result.then(() => {
-                    main.apply(null, arguments)
+                    main(queue, func, resolve, reject, index);
                 })
                 return
             }
@@ -35,8 +40,8 @@ function main (queue, func, resolve, reject) {
             }
         }
 
-        if (queue.length) {
-            main.apply(null, arguments)
+        if (index < len) {
+            main(queue, func, resolve, reject, index)
         } else {
             resolve();
         }
