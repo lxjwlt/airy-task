@@ -1,15 +1,26 @@
 {
   "name": "airy-task",
   "version": "1.0.0",
-  "description": "",
+  "description": "none block task",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha \"test/**/*.spec.js\""
+    "test": "mocha \"test/**/*.spec.js\"",
+    "build": "rollup -c"
   },
   "keywords": [],
   "author": "lxjwlt",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "rollup": "^0.50.0",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/lxjwlt/airy-task/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lxjwlt/airy-task.git"
   }
 }

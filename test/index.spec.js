@@ -100,6 +100,4 @@ describe('airy-task', function () {
             done()
         })
     })
-
-    // todo progress
 })
