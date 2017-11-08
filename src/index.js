@@ -6,7 +6,10 @@ function airyTask (list, func) {
         main(queue, func, () => {
             queue = null
             resolve()
-        }, reject)
+        }, () => {
+            queue = null
+            reject()
+        })
 
     })
 }
@@ -51,10 +54,6 @@ function main (queue, func, resolve, reject, index) {
 
 function nextTick (func) {
 
-    if (typeof process !== 'undefined') {
-        return process.nextTick(func)
-    }
-
     if (typeof requestAnimationFrame !== 'undefined') {
         return requestAnimationFrame(func)
     }
@@ -63,7 +62,7 @@ function nextTick (func) {
 }
 
 function isPromise (value) {
-    return Object.prototype.toString.call(value) === '[object Promise]'
+    return value && typeof value.then === 'function'
 }
 
 module.exports = airyTask

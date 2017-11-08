@@ -39,7 +39,7 @@ describe('airy-task', function () {
         aTask(arr, ({value}) => {
             if (value === 1) {
                 let time = Date.now();
-                while (Date.now() - time <= 30) {}
+                while (Date.now() - time <= 100) {}
             }
             orderList.push(value)
         }).then(() => {
@@ -82,5 +82,24 @@ describe('airy-task', function () {
             done();
         })
     })
+    it('limit time', function (done) {
+        let func = () => {};
+        let longList = Array.from(Array(1000000)).map((v, index) => index);
 
+        let time = Date.now();
+
+        longList.forEach(func)
+
+        let normalTime = Date.now() - time;
+
+        time = Date.now()
+
+        aTask(longList, func).then(() => {
+            console.log(Date.now() - time)
+            assert.ok(Date.now() - time - normalTime < 150)
+            done()
+        })
+    })
+
+    // todo progress
 })
